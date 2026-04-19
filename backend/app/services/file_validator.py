@@ -55,8 +55,10 @@ def sanitise_filename(filename: str) -> str:
     Strip path components and dangerous characters.
     Returns a safe filename, never a path.
     """
-    # Take only the basename to prevent path traversal
-    name = Path(filename).name
+    # Strip both forward and backward slashes to handle any path format
+    name = filename.replace("\\", "/").split("/")[-1]
+    if ":" in name:
+        name = name.split(":")[-1]
     # Replace anything thats not alphanumeric, dash, underscore, or dot
     name = re.sub(r"[^\w.\-]", "_", name)
     # Collapse multiple dots to prevent double-extension tricks like .pdf.exe
