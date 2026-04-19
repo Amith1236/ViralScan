@@ -55,11 +55,11 @@ def create_app() -> FastAPI:
     app.include_router(scan_controller.router, prefix="/api")
 
     # Serve frontend static files
-    app.mount("/static", StaticFiles(directory="/app/frontend/static"), name="static")
+    # app.mount("/static", StaticFiles(directory="/app/frontend/static"), name="static")
 
-    @app.get("/{full_path:path}", include_in_schema=False)
-    async def serve_frontend(full_path: str):
-        return FileResponse("/app/frontend/templates/index.html")
+    # @app.get("/{full_path:path}", include_in_schema=False)
+    # async def serve_frontend(full_path: str):
+    #     return FileResponse("/app/frontend/templates/index.html")
 
     return app
 
