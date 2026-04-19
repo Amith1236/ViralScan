@@ -1,4 +1,4 @@
-# PDFSafe
+# ViralScan
 
 
 A secure, containerised malware scanning web app using VirusTotal API with AI-powered explanations (Gemini).

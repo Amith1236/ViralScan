@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ViralScan — File Threat Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+<body>
+
+  <!-- Grid overlay -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!--Header-->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">Viral<strong>Scan</strong></span>
+      </div>
+      <div class="header-meta">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-label" id="statusLabel">Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <!--Main-->
+  <main class="main">
+
+    <!-- Upload Panel -->
+    <section class="panel upload-panel" id="uploadPanel">
+      <div class="panel-label">01 / UPLOAD FILE</div>
+
+      <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Upload file for scanning">
+        <div class="drop-zone-inner">
+          <div class="drop-icon" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M24 4L24 32M24 4L16 12M24 4L32 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 36V40C8 42.2 9.8 44 12 44H36C38.2 44 40 42.2 40 40V36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="drop-text">Drop file here or <span class="drop-link">browse</span></p>
+          <p class="drop-hint">Max 32 MB · PDF, ZIP, Office, EXE, images</p>
+        </div>
+        <input type="file" id="fileInput" class="file-input-hidden" aria-hidden="true" tabindex="-1" />
+      </div>
+
+      <!-- File selected preview -->
+      <div class="file-preview" id="filePreview" hidden>
+        <div class="file-preview-icon" aria-hidden="true">📄</div>
+        <div class="file-preview-info">
+          <span class="file-preview-name" id="fileName">—</span>
+          <span class="file-preview-size" id="fileSize">—</span>
+        </div>
+        <button class="file-clear-btn" id="fileClearBtn" aria-label="Remove file">✕</button>
+      </div>
+
+      <button class="scan-btn" id="scanBtn" disabled>
+        <span class="scan-btn-text">Scan File</span>
+        <span class="scan-btn-icon" aria-hidden="true">→</span>
+      </button>
+
+      <!-- Error message -->
+      <div class="error-msg" id="errorMsg" hidden role="alert"></div>
+    </section>
+
+    <!-- Progress Panel -->
+    <section class="panel progress-panel" id="progressPanel" hidden>
+      <div class="panel-label">02 / SCANNING</div>
+      <div class="scan-animation" aria-hidden="true">
+        <div class="scan-ring"></div>
+        <div class="scan-ring scan-ring--2"></div>
+        <div class="scan-ring scan-ring--3"></div>
+        <div class="scan-core">⬡</div>
+      </div>
+      <p class="scan-status-text" id="scanStatusText">Submitting file to VirusTotal…</p>
+      <p class="scan-hint">This may take up to 60 seconds</p>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </section>
+
+    <!-- Results Panel -->
+    <section class="panel results-panel" id="resultsPanel" hidden>
+      <div class="panel-label">03 / RESULTS</div>
+
+      <!-- Verdict banner -->
+      <div class="verdict" id="verdict">
+        <div class="verdict-icon" id="verdictIcon" aria-hidden="true"></div>
+        <div class="verdict-body">
+          <div class="verdict-level" id="verdictLevel">—</div>
+          <div class="verdict-sub" id="verdictSub">—</div>
+        </div>
+      </div>
+
+      <!-- Stats grid -->
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- File metadata -->
+      <div class="meta-row" id="metaRow"></div>
+
+      <!-- Engine breakdown -->
+      <details class="engines-section" id="enginesSection">
+        <summary class="engines-toggle">
+          Engine Breakdown
+          <span class="engines-count" id="enginesCount"></span>
+        </summary>
+        <div class="engines-table-wrap">
+          <table class="engines-table" id="enginesTable">
+            <thead>
+              <tr>
+                <th>Engine</th>
+                <th>Result</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody id="enginesBody"></tbody>
+          </table>
+        </div>
+      </details>
+
+      <!-- AI Explain -->
+      <div class="explain-section">
+        <button class="explain-btn" id="explainBtn">
+          <span class="explain-btn-icon" aria-hidden="true">✦</span>
+          Explain in plain English
+        </button>
+        <div class="explain-result" id="explainResult" hidden>
+          <div class="explain-text" id="explainText"></div>
+          <div class="explain-action" id="explainAction"></div>
+        </div>
+        <div class="explain-loading" id="explainLoading" hidden>
+          <span class="explain-dots"><span>.</span><span>.</span><span>.</span></span>
+          Asking AI to explain…
+        </div>
+      </div>
+
+      <!-- Scan another -->
+      <button class="reset-btn" id="resetBtn">Scan another file</button>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>Powered by <strong>VirusTotal</strong> + <strong>Gemini AI</strong></span>
+    <span class="footer-sep">·</span>
+    <span>Files are never stored</span>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
