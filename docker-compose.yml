@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  # App
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: viralscan_app_dev
+    env_file: .env
+    environment:
+      ENVIRONMENT: development
+    volumes:
+      - ./backend:/app          
+      - ./frontend:/app/frontend
+    ports:
+      - "8000:8000"             # Direct access in dev without nginx reverse proxy
+    tmpfs:
+      - /tmp/viralscan_uploads:mode=700,uid=0  # temp file storage for uploads
+    networks:
+      - viralscan_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  viralscan_net:
+    driver: bridge
