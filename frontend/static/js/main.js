@@ -39,9 +39,11 @@ let currentResult   = null;
 let pollTimer       = null;
 
 // File Selection
-dropZone.addEventListener('click', () => fileInput.click());
 dropZone.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') fileInput.click();
+  if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+    e.preventDefault();
+    fileInput.click();
+  }
 });
 
 fileInput.addEventListener('change', () => {

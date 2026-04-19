@@ -133,12 +133,12 @@ async def explain_results(request: Request, body: ExplainRequest):
         raise HTTPException(status_code=502, detail="AI explanation service is temporarily unavailable.")
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ── Helpers ────────────────────────────────────────────────────────────────
 
 def _is_valid_analysis_id(analysis_id: str) -> bool:
     """Analysis IDs from VirusTotal are base64url-encoded strings."""
     import re
-    return bool(re.match(r'^[A-Za-z0-9_\-]{10,200}$', analysis_id))
+    return bool(re.match(r'^[A-Za-z0-9_\-]{10,200}={0,2}$', analysis_id))
 
 
 def _cleanup_temp(path: str) -> None:
